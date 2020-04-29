@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Spring i Thymeleaf: lista pracowników</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+
+    </head>
+    <body>
+        <div style=";margin-left: 20%;margin-right:20%  " >
+            <form action="/post" method="POST" style="border: 1px solid pink" th:each="blogRepository : ${blogRepository}">
+                <p  th:text='${blogRepository.id}' ></p>
+                <p th:text='${blogRepository.title} '></p>
+                <p th:text='${blogRepository.content}'></p>
+                <input name="title" hidden="" th:value="${blogRepository.title}"/>
+                <input name="content" hidden="" th:value="${blogRepository.content}"/>
+                <input type="submit"  value="usuń"/>
+            </form>
+
+            <p><a href="/">Powrót</a></p>
+        </div>
+    </body>
+</html>

@@ -6,6 +6,7 @@
 package wizut.tpsi.lab9;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,25 +27,50 @@ public class BlogRepository {
     private DataSource dataSource;
 
     public List<BlogPost> getAllPosts() throws SQLException {
-    List<BlogPost> posts = new ArrayList<>();
+        List<BlogPost> posts = new ArrayList<>();
 
-    String sql = "select * from blog_post";
+        String sql = "select * from blog_post";
 
-    try(Connection con = dataSource.getConnection();
-        Statement st = con.createStatement();
-        ResultSet rs = st.executeQuery(sql);) {
+        try (Connection con = dataSource.getConnection();
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery(sql);) {
 
-        while(rs.next()) {
-            Long id = rs.getLong("id");
-            String title = rs.getString("title");
-            String content = rs.getString("content");
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
 
-            BlogPost post = new BlogPost(id, title, content);
-            posts.add(post);
+                BlogPost post = new BlogPost(id, title, content);
+                posts.add(post);
+            }
+        }
+
+        return posts;
+    }
+
+    public void createPost(BlogPost post) throws SQLException {
+        String sql = "insert into blog_post(title, content) values(?, ?)";
+
+        try (Connection con = dataSource.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, post.getTitle());
+            ps.setString(2, post.getContent());
+
+            ps.executeUpdate();
         }
     }
 
-    return posts;
-}
+    public void deletePost(BlogPost post) throws SQLException {
+        String sql = "delete from blog_post where title=?";
+
+        try (Connection con = dataSource.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1,post.getTitle());
+
+            ps.executeUpdate();
+        }
+    }
 
 }
