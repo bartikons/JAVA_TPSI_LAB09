@@ -24,30 +24,22 @@ public class BlogController {
     private BlogRepository blogRepository;
 
     @RequestMapping("/")
-    public String index() {
+    public String index(Model model) throws SQLException {
+        model.addAttribute("blogRepository", blogRepository.getAllPosts());
         return "index";
     }
     
     @PostMapping("/post")
-    public String post(BlogPost post) throws SQLException {
+    public String post(Model model,BlogPost post) throws SQLException {
         blogRepository.deletePost(post);
-        return "redirect:/";
-    }
-
-    @GetMapping("/post")
-    public String post(Model model) throws SQLException {
         model.addAttribute("blogRepository", blogRepository.getAllPosts());
-        return "post";
+        return "redirect:/";
     }
 
     @PostMapping("/newpost")
-    public String newPost(BlogPost post) throws SQLException {
+    public String newPost(Model model,BlogPost post) throws SQLException {
         blogRepository.createPost(post);
+        model.addAttribute("blogRepository", blogRepository.getAllPosts());
         return "redirect:/";
-    }
-
-    @GetMapping("/newpost")
-    public String newpost() {
-        return "newpost";
     }
 }

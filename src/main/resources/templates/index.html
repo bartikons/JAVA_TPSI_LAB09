@@ -1,19 +1,27 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8"/>
     </head>
     <body>
         <div>
-            <p><a href="post">Post</a></p>
-            <p><a href="newpost">newpost</a></p>
+            <form action="/post" method="POST" style="border: 1px solid pink" th:each="blogRepository : ${blogRepository}">
+                <p th:text='${blogRepository.id}' ></p>
+                <p th:text='${blogRepository.title} '></p>
+                <p th:text='${blogRepository.content}'></p>
+                
+                <input name="id" hidden="" th:value="${blogRepository.id}"/>
+                <input type="submit"  value="usuń"/>
+            </form>
+            <form action="/newpost" method="POST">
+                <p>Tytuł: <input type="text" name="title" size="150"/></p><p>
+                Treść:
+                <textarea name="content" cols="150" rows="5"></textarea></p>
+                <input type="submit" value="Dodaj wpis" />
+                
+            </form>
         </div>
     </body>
 </html>
